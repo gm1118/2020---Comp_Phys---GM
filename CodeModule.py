@@ -10,23 +10,45 @@ def floaterror(x, result='float'):
     to the given float using the kwarg 'result'
     """
     y = 0
-    a = np.log2(x)  #find log base 2 of float
-    e = int(a)      #log of mantissa <1 as therefore exponent is a nearby integer
-    if (a-e) == 0:      #but must account for smaller difference for the lower float due to the smaller exponent in that area 
-        y = 1           #No need to change anything if mantissa is 1 even if exponent is negative
-    elif a<0:           #the mantissa increases the log, which is fine if the exponent is positive
-        e -= 1          #as the int() function rounds down absolutely this needs to be compensated when negative
-    m = x/(2**e)        #the mantissa
-    u = m+2**-52        #the next possible mantissa and thus the one of the nearest upper float
-    l = m-2**(-52-y)    #the previous possible mantissa and thus the one of the nearest lower float
+    if bit==64:
+        m_range=52
+        e_range=10
+    elif bit==32:
+        m_range=23
+        e_range=7
+    if x==0:            #Consider exceptional case of x=0 as log of 0 is undefined
+        m=0
+        e=-(2**e_range)+2
+    else:
+        a = np.log2(np.abs(x))  #find log base 2 of float
+        e = int(a)      #log of mantissa <1 as therefore exponent is a nearby integer
+        if e>((2**e_range)+1):
+            e=(2**e_range)+1
+        elif e<(-(2**e_range)+2):
+            e=-(2**e_range)+3        
+        if (a-e) == 0:      #but must account for smaller difference for the lower float due to the smaller exponent in that area 
+            y = 1           #No need to change anything if mantissa is 1 even if exponent is negative
+        elif a<0:           #the mantissa increases the log, which is fine if the exponent is positive
+            e -= 1          #as the int() function rounds down absolutely this needs to be compensated when negative
+        m = x/(2**e)        #the mantissa
+    u = m+2**-m_range        #the next possible mantissa and thus the one of the nearest upper float
+    l = m-2**(-m_range-y)    #the previous possible mantissa and thus the one of the nearest lower float
     uf = u*(2**e)       #the nearest upper float
     lf = l*(2**e)       #the nearest lower float
-    ru = (uf-x)/2     #The range of the upper float where real numbers are rounded to the float
-    fractru = ru/x     #Converted to a fraction
-    rl = (x-lf)/2      #Likewise for lower
-    fractrl = rl/x
-    fract = fractru+fractrl  
-    r = ru+rl
+    if x==0:            #Additional considerations for x=0 as fractions are impossible with relation to 0
+        ru=uf/2
+        fractru='N/A'
+        rl=-lf/2
+        fractrl='N/A'
+        fract='N/A'
+        r=ru+rl
+    else:
+        ru = (uf-x)/2     #The range of the upper float where real numbers are rounded to the float
+        fractru = ru/x     #Converted to a fraction
+        rl = (x-lf)/2      #Likewise for lower
+        fractrl = rl/x
+        fract = fractru+fractrl  
+        r = ru+rl
 
     print('Its nearest upper float is',uf,' and its nearest lower float is',lf)
     if result=='fract':
