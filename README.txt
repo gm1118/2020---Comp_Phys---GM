@@ -15,11 +15,14 @@ The 4th question focused on our ability to use fourier transforms, and the numpy
 with a response function over an appropriate data range.
 The 5th and final question tested our techniques for solving ODEs, specifically the Runge-Kutta and Adams-Bashforth methods. This was applied in the situation of an impedance divider circuit where we had to calculate the voltage output.
 The data and figures I used for my answers can be reproduced using TestingScript.py, while the functions that script uses are defined in CodeModule.py.
-The comments in TestingScript.py explain which code is used for which question.
+The comments in TestingScript.py explain which code is used for which question, and the SpyderIDE is advised so that each question's code is divided into
+seperate sections.
 (it should be noted that there were errors in my solutions for the 4th and 5th questions, I may add an additional branch later that solves these problems)
 
 The second assessment was a lab project which was focused on utilising numerical integration and Monte Carlo techinques to solve Quantum systems numerically.
-This resultant functions created were able to use Newton-Coates (the trapezium rule and Simpson's rule) and Monte Carlo integration, with both techniques being possible in a 2D and 3D manner. The Project involved answering a series of questions with increasing difficulty which involved utilising these techinques. The rest of this README is a copy of the one submitted with the project:
+This resultant functions created were able to use Newton-Coates (the trapezium rule and Simpson's rule) and Monte Carlo integration, with both techniques being possible in a 2D and 3D manner. The Project involved answering a series of questions with increasing difficulty which involved utilising these techinques. 
+Please note that the project results script was also designed for use within the Spyder IDE, which uses #%% for section breaks.
+The rest of this README is a copy of the one submitted with the project:
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 
